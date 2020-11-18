@@ -19,7 +19,28 @@ Sentinel-1 data have a spatial resolution 10, 25 or 40 metres. It means, that 10
 If we can use getDownloadURL for bigger areas, we can use the 'scale' parameter in getDownloadURL. Or rescale 
 an image before getDownloadURL.
 
-You can check help(ee.Image.getDownloadURL) for more information. 
+Simple example of using getDownloadURL is in [download_sen1_getDownloadURL_one_image.py](https://github.com/CzendaZdenda/google-earth-engine-notes/blob/main/download_sen1_getDownloadURL_one_image.py). Most interesting part is this:
+```python
+url = image.getDownloadURL({'scale': scale,
+                            'name': short_name,
+                            'region': region,
+                            # 'filePerBand': False
+                            })
+```
+Where image is ee.image.Image and region is ee.Geometry.
+
+Then we can use request library to dowload data:
+```python
+r = requests.get(url, allow_redirects=True)
+
+# you can get a filename from the response or set your own
+filename_hdr = r.headers.get('Content-disposition').split(';')[1].split('=')[1]
+
+with open(dst_dir / filename_hdr, 'wb') as new_file:
+    new_file.write(r.content)
+```
+
+For more information you can type in python console `help(ee.Image.getDownloadURL)`.
 
 Interesting parameters:
 * name - _base name to use when constructing filenames_
