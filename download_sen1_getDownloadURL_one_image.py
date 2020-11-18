@@ -8,41 +8,46 @@ import ee
 import requests
 from pathlib import Path
 
-# uncomment this in case you did not authenticate to Earth Engine yet
-# ee.Authenticate()
 
-# initialize ee library
-ee.Initialize()
+def main():
+    # uncomment this in case you did not authenticate to Earth Engine yet
+    # ee.Authenticate()
 
-dataset_name = 'COPERNICUS/S1_GRD'
-dst_dir = Path(f'data/download')
+    # initialize ee library
+    ee.Initialize()
 
-# Baikal Lake
-filename = 'S1B_IW_GRDH_1SDV_20201031T225743_20201031T225808_024063_02DBE1_DD6E'
-scale = 50
+    dataset_name = 'COPERNICUS/S1_GRD'
+    dst_dir = Path(f'data/download')
 
-# Svyatoy Nos Peninsula
-region = ee.Geometry.Polygon([[108.38836669921874, 53.45044250555688],
-                              [109.171142578125, 53.45044250555688],
-                              [109.171142578125, 53.904338156274704],
-                              [108.38836669921874, 53.904338156274704],
-                              [108.38836669921874, 53.45044250555688]])
+    # Baikal Lake
+    filename = 'S1B_IW_GRDH_1SDV_20201031T225743_20201031T225808_024063_02DBE1_DD6E'
+    scale = 50
 
-short_name = f"{'_'.join(filename.split('_')[:-3])}_clipped_{scale}m"
+    # Svyatoy Nos Peninsula
+    region = ee.Geometry.Polygon([[108.38836669921874, 53.45044250555688],
+                                  [109.171142578125, 53.45044250555688],
+                                  [109.171142578125, 53.904338156274704],
+                                  [108.38836669921874, 53.904338156274704],
+                                  [108.38836669921874, 53.45044250555688]])
 
-image = ee.Image(f"{dataset_name}/{filename}")
+    short_name = f"{'_'.join(filename.split('_')[:-3])}_clipped_{scale}m"
 
-# scale is in meters (because of that 'COPERNICUS/S1_GRD' dataset has resolution in metres?)
-url = image.getDownloadURL({'scale': scale,
-                            'name': short_name,
-                            'region': region,
-                            # 'filePerBand': False
-                            })
+    image = ee.Image(f"{dataset_name}/{filename}")
 
-r = requests.get(url, allow_redirects=True)
+    # scale is in meters (because of that 'COPERNICUS/S1_GRD' dataset has resolution in metres?)
+    url = image.getDownloadURL({'scale': scale,
+                                'name': short_name,
+                                'region': region,
+                                # 'filePerBand': False
+                                })
 
-# you can get a filename from the response or set your own
-filename_hdr = r.headers.get('Content-disposition').split(';')[1].split('=')[1]
+    r = requests.get(url, allow_redirects=True)
 
-with open(dst_dir / filename_hdr, 'wb') as new_file:
-    new_file.write(r.content)
+    # you can get a filename from the response or set your own
+    filename_hdr = r.headers.get('Content-disposition').split(';')[1].split('=')[1]
+
+    with open(dst_dir / filename_hdr, 'wb') as new_file:
+        new_file.write(r.content)
+
+if __name__ == '__name__':
+    main()
