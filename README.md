@@ -21,7 +21,7 @@ Easy way to get coordinates in GeoJSON format.
 
 ## How to get information about available files within an area? 
 
-Simple example of getting information about available Sentinel-1 data is in [available_images_sen1_simple.py](https://github.com/CzendaZdenda/google-earth-engine-notes/blob/main/available_images_sen1_simple.py).
+Simple example of getting information about available Sentinel-1 data is in [available_images_sen1_simple.py](https://github.com/CzendaZdenda/google-earth-engine-notes/blob/master/available_images_sen1_simple.py).
 
 First define a region:
 ```python
@@ -211,7 +211,7 @@ Sentinel-1 data have a spatial resolution 10, 25 or 40 metres. It means, that 10
 If we can use getDownloadURL for bigger areas, we can use the 'scale' parameter in getDownloadURL. Or rescale 
 an image before getDownloadURL.
 
-Simple example of using getDownloadURL is in [download_sen1_getDownloadURL_one_image.py](https://github.com/CzendaZdenda/google-earth-engine-notes/blob/main/download_sen1_getDownloadURL_one_image.py). Most interesting part is this:
+Simple example of using getDownloadURL is in [download_sen1_getDownloadURL_one_image.py](https://github.com/CzendaZdenda/google-earth-engine-notes/blob/master/download_sen1_getDownloadURL_one_image.py). Most interesting part is this:
 ```python
 url = image.getDownloadURL({'scale': scale,
                             'name': short_name,
@@ -251,7 +251,7 @@ _ee.ee_exception.EEException: Total request size (... bytes) must be less than o
 
 Images will be exported to your Google Drive folder (toDrive). Then you can download it.
 
-Example is in [download_sen1_toDrive_one_image.py](https://github.com/CzendaZdenda/google-earth-engine-notes/blob/main/download_sen1_toDrive_one_image.py).
+Example is in [download_sen1_toDrive_one_image.py](https://github.com/CzendaZdenda/google-earth-engine-notes/blob/master/download_sen1_toDrive_one_image.py).
 
 First, define the task:
 ```python
@@ -307,6 +307,10 @@ Error: Exported bands must have compatible data types; found inconsistent types:
 
   -> Because of "... Currently only 'GeoTIFF' and 'TFRecord' are supported, defaults to 'GeoTIFF'..." and  in GeoTIFF you can not mix data types. Try to save bands separately (use image.select('band_name')). 
 
+## Download clipped images over some area within some period (Sentinel-1)
+Sometimes I want to investigate some area and I need Sentinel-1 images to be at my local computer. First I need to get a list of image names and then dowload them in for loop. If the area is not too big ([Download](https://github.com/CzendaZdenda/google-earth-engine-notes#download)) I can use `getDownloadURL` method. Another approach is to use `toDrive` method and exort data first to Google Drive folder. And then download them.
+
+Example using getDownloadURL ([download_sen1_getDownloadURL_collection.py](https://github.com/CzendaZdenda/google-earth-engine-notes/blob/master/download_sen1_getDownloadURL_collection.py)) and toDrive ([download_sen1_toDrive_collection.py](https://github.com/CzendaZdenda/google-earth-engine-notes/blob/master/download_sen1_toDrive_collection.py)).
 
 ## Plotting Timeseries
 TODO
