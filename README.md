@@ -1,6 +1,14 @@
 # My notes about Google Earth Engine (using Python)
 I will commit here some code and notes. This is not a tutorial of Google Earth Engine.
 
+[Links](https://github.com/CzendaZdenda/google-earth-engine-notes#links)
+
+[How to get information about available files within an area?](https://github.com/CzendaZdenda/google-earth-engine-notes#how-to-get-information-about-available-files-within-an-area)
+
+[Download](https://github.com/CzendaZdenda/google-earth-engine-notes#download)
+
+---
+
 ## Links
 [Official examples on GitHub](https://github.com/google/earthengine-api/tree/master/python)
 
@@ -176,6 +184,14 @@ for example for checking how much the image cross your area.
 
 With this you can filter those images you need for the next work.
 
+If you are familier with [Earth Engine Code Editor](https://code.earthengine.google.com/), you can easily add image(s) into a map:
+```javascript
+var image=ee.Image('COPERNICUS/S1_GRD/S1A_IW_GRDH_1SDH_20161207T094531_20161207T094556_014272_017165_B235');
+
+Map.addLayer(image.select(['HH']), {opacity: 0.5});
+Map.setCenter(118.134323, 56.839642, 6);
+```
+And check if it is located where you think.
 
 ## Download
 To export/download data, in my case raster data (ee.Image), to your computer from Earth Engine you 
