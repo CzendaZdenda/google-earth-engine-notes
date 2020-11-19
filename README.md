@@ -11,6 +11,172 @@ I will commit here some code and notes. This is not a tutorial of Google Earth E
 [geojson.io](https://geojson.io/#map=9/53.6536/108.6383)
 Easy way to get coordinates in GeoJSON format.
 
+## How to get information about available files within an area? 
+
+Simple example of getting information about available Sentinel-1 data is in [available_images_sen1_simple.py](https://github.com/CzendaZdenda/google-earth-engine-notes/blob/main/available_images_sen1_simple.py).
+
+First define a region:
+```python
+region = ee.Geometry.Polygon(
+        [[118.06526184082031, 56.81102820967043],
+         [118.20945739746094, 56.81102820967043],
+         [118.20945739746094, 56.881062658158335],
+         [118.06526184082031, 56.881062658158335],
+         [118.06526184082031, 56.81102820967043]])
+```
+
+Here is an example how to create 100m x 100m rectangle around a point:
+```python
+# ee.Geometry.Point([lon, lat])
+rect = ee.Geometry.Point([118.134323, 56.839642]).buffer(100/2).bounds()
+```  
+
+Than get a collection of images and filter by you area:
+```python
+sen_collection = ee.ImageCollection("COPERNICUS/S1_GRD").filterBounds(region)
+```
+
+You can also filter by date or another parameters:
+```python
+sen_collection = ee.ImageCollection("COPERNICUS/S1_GRD") \
+        .filterDate('2019-12-1', '2019-12-31') \
+        .filterBounds(region)  \
+        .filter(ee.Filter.eq('platform_number', 'B')) \
+        .filter(ee.Filter.eq('orbitProperties_pass', 'DESCENDING')) \
+        .filter(ee.Filter.eq('instrumentMode', 'IW')) \
+        .filter(ee.Filter.eq('resolution_meters', 10))
+```
+
+Parameters like 'platform_number' etc. are properties of Sentinel-1 dataset. More you can get [here](https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S1_GRD) in Image Properties part.  
+Using `sen_collection.getInfo()` (method of ee.ImageCollection) you will get information of collection in a dictionary format.
+If you want get information of Images (not Collection), you can use 'feature'-key (`sen_collection.getInfo()["features"]`) to get list of dictionaries with information for each image/feature.
+
+Information for each image looks like this:
+```python
+{
+    "type": "Image",
+    "bands": [
+        {
+            "id": "VV",
+            "data_type": {"type": "PixelType", "precision": "double"},
+            "dimensions": [29644, 22018],
+            "crs": "EPSG:32634",
+            "crs_transform": [10, 0, 190615.1700898306, 0, -10, 5568907.024637105],
+        },
+        {
+            "id": "VH",
+            "data_type": {"type": "PixelType", "precision": "double"},
+            "dimensions": [29644, 22018],
+            "crs": "EPSG:32634",
+            "crs_transform": [10, 0, 190615.1700898306, 0, -10, 5568907.024637105],
+        },
+        {
+            "id": "angle",
+            "data_type": {"type": "PixelType", "precision": "float"},
+            "dimensions": [21, 10],
+            "crs": "EPSG:32634",
+            "crs_transform": [
+                13123.153716519882,
+                -2997.124020510295,
+                224484.88563284784,
+                1943.6171710630879,
+                20154.351669282652,
+                5355371.242224661,
+            ],
+        },
+    ],
+    "id": "COPERNICUS/S1_GRD/S1A_IW_GRDH_1SDV_20191202T163455_20191202T163520_030172_0372A4_67BA",
+    "version": 1605770302269949,
+    "properties": {
+        "GRD_Post_Processing_start": 1575312426960,
+        "sliceNumber": 13,
+        "GRD_Post_Processing_facility_name": "Copernicus S1 Core Ground Segment - DPA",
+        "resolution": "H",
+        "SLC_Processing_facility_name": "Copernicus S1 Core Ground Segment - DPA",
+        "system:footprint": {
+            "type": "LinearRing",
+            "coordinates": [
+                [20.650383724905083, 48.683636829205376],
+                [20.708093752413863, 48.689462042765875],
+                [20.692741981351944, 48.77453832068133],
+                [20.61576122666991, 49.1229831381155],
+                [20.532279753481006, 49.47321860393239],
+                [20.356153119714357, 50.16503175299044],
+                [20.35020201925955, 50.186220664724914],
+                [19.23253684554866, 50.07195252769796],
+                [18.433621274536364, 49.98332788323961],
+                [17.917943794094278, 49.92302405181339],
+                [17.006240203032174, 49.81041382117267],
+                [16.899647073277396, 49.79672408245612],
+                [16.906379196953758, 49.75661742731832],
+                [16.908261475308446, 49.74912228054839],
+                [16.912415470888412, 49.734420467927706],
+                [17.022557803424927, 49.37626305205186],
+                [17.130959415106226, 49.017945702798535],
+                [17.23766868030927, 48.65947158203902],
+                [17.343143252770933, 48.29943020529188],
+                [17.346405753633135, 48.299534017246586],
+                [20.650383724905083, 48.683636829205376],
+            ],
+        },
+        "familyName": "SENTINEL-1",
+        "segmentStartTime": 1575304191900,
+        "missionDataTakeID": 225956,
+        "GRD_Post_Processing_facility_country": "Germany",
+        "nssdcIdentifier": "2014-016A",
+        "productClass": "S",
+        "phaseIdentifier": 1,
+        "orbitProperties_pass": "ASCENDING",
+        "relativeOrbitNumber_stop": 175,
+        "system:time_end": 1575304495000,
+        "SLC_Processing_facility_site": "DLR-Oberpfaffenhofen",
+        "GRD_Post_Processing_stop": 1575313120000,
+        "system:time_start": 1575304495000,
+        "instrumentMode": "IW",
+        "totalSlices": 29,
+        "SLC_Processing_stop": 1575312891000,
+        "startTimeANX": 789446.6,
+        "SLC_Processing_start": 1575312553000,
+        "resolution_meters": 10,
+        "instrumentSwath": "IW",
+        "relativeOrbitNumber_start": 175,
+        "productTimelinessCategory": "Fast-24h",
+        "SLC_Processing_software_name": "Sentinel-1 IPF",
+        "sliceProductFlag": "true",
+        "S1TBX_Calibration_vers": "6.0.4",
+        "orbitNumber_start": 30172,
+        "GRD_Post_Processing_facility_site": "DLR-Oberpfaffenhofen",
+        "instrument": "Synthetic Aperture Radar",
+        "GRD_Post_Processing_software_name": "Sentinel-1 IPF",
+        "platform_number": "A",
+        "S1TBX_SAR_Processing_vers": "6.0.4",
+        "productType": "GRD",
+        "orbitProperties_ascendingNodeTime": 1575303706150,
+        "stopTimeANX": 814445.5,
+        "productComposition": "Slice",
+        "productClassDescription": "SAR Standard L1 Product",
+        "GRD_Post_Processing_software_version": "003.10",
+        "SLC_Processing_software_version": "003.10",
+        "orbitNumber_stop": 30172,
+        "instrumentConfigurationID": 6,
+        "system:asset_size": 4063225529,
+        "cycleNumber": 186,
+        "system:index": "S1A_IW_GRDH_1SDV_20191202T163455_20191202T163520_030172_0372A4_67BA",
+        "SNAP_Graph_Processing_Framework_GPF_vers": "6.0.4",
+        "SLC_Processing_facility_org": "ESA",
+        "SLC_Processing_facility_country": "Germany",
+        "GRD_Post_Processing_facility_org": "ESA",
+        "transmitterReceiverPolarisation": ["VV", "VH"],
+    },
+}
+```
+If talking about Sentinel-1 data I usually need information about orbit(ascending, descending), mode (IW, EW, SM) 
+and polarization (['VV'], ['HH'], ['VV', 'VH'], or ['HH', 'HV']). `system:footprint` parameter could be also interesting,
+for example for checking how much the image cross your area.  
+
+With this you can filter those images you need for the next work.
+
+
 ## Download
 To export/download data, in my case raster data (ee.Image), to your computer from Earth Engine you 
 can use either **ee.Image.getDownloadURL** method [[1]](https://developers.google.com/earth-engine/apidocs/ee-image-getdownloadurl)
@@ -124,6 +290,7 @@ Error: Export too large: specified 598674825 pixels (max: 100000000). Specify hi
 Error: Exported bands must have compatible data types; found inconsistent types: Float64 and Float32.
 
   -> Because of "... Currently only 'GeoTIFF' and 'TFRecord' are supported, defaults to 'GeoTIFF'..." and  in GeoTIFF you can not mix data types. Try to save bands separately (use image.select('band_name')). 
+
 
 ## Plotting Timeseries
 TODO
