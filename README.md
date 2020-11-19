@@ -7,6 +7,8 @@ I will commit here some code and notes. This is not a tutorial of Google Earth E
 
 [Download](https://github.com/CzendaZdenda/google-earth-engine-notes#download)
 
+[Download collection (Sentinel-1)](https://github.com/CzendaZdenda/google-earth-engine-notes#download-clipped-images-over-some-area-within-some-period-sentinel-1)
+
 ---
 
 ## Links
