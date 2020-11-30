@@ -308,6 +308,8 @@ Error: Export too large: specified 598674825 pixels (max: 100000000). Specify hi
 Error: Exported bands must have compatible data types; found inconsistent types: Float64 and Float32.
 
   -> Because of "... Currently only 'GeoTIFF' and 'TFRecord' are supported, defaults to 'GeoTIFF'..." and  in GeoTIFF you can not mix data types. Try to save bands separately (use image.select('band_name')). 
+  
+  -> You can use float() or toFloat() in ee.Image to convert all bands to a 32-bit float ([ee.Image.float](https://developers.google.com/earth-engine/apidocs/ee-image-float)).
 
 ## Download clipped images over some area within some period (Sentinel-1)
 Sometimes I want to investigate some area and I need Sentinel-1 images to be at my local computer. First I need to get a list of image names and then dowload them in for loop. If the area is not too big ([Download](https://github.com/CzendaZdenda/google-earth-engine-notes#download)) I can use `getDownloadURL` method. Another approach is to use `toDrive` method and exort data first to Google Drive folder. And then download them.
