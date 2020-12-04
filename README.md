@@ -9,6 +9,8 @@ I will commit here some code and notes. This is not a tutorial of Google Earth E
 
 [Download collection (Sentinel-1)](https://github.com/CzendaZdenda/google-earth-engine-notes#download-clipped-images-over-some-area-within-some-period-sentinel-1)
 
+[Plotting Timeseries (Sentinel-1)](https://github.com/CzendaZdenda/google-earth-engine-notes#plotting-timeseries)
+
 ---
 
 ## Links
@@ -320,5 +322,5 @@ Sometimes I want to investigate some area and I need Sentinel-1 images to be at 
 
 Example using getDownloadURL ([download_sen1_getDownloadURL_collection.py](https://github.com/CzendaZdenda/google-earth-engine-notes/blob/master/download_sen1_getDownloadURL_collection.py)) and toDrive ([download_sen1_toDrive_collection.py](https://github.com/CzendaZdenda/google-earth-engine-notes/blob/master/download_sen1_toDrive_collection.py)).
 
-## Plotting Timeseries
-TODO
+## Plotting Timeseries (Sentinel-1)
+Example using Matplotlib library - [get_sentinel1_timeseries_data.py](https://github.com/CzendaZdenda/google-earth-engine-notes/blob/master/get_sentinel1_timeseries_data.py). Inspired by [Time Series Visualization with Altair](https://developers.google.com/earth-engine/tutorials/community/time-series-visualization-with-altair).
