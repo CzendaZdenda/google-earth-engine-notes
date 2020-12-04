@@ -12,6 +12,8 @@ I will commit here some code and notes. This is not a tutorial of Google Earth E
 ---
 
 ## Links
+[API Documentation](https://developers.google.com/earth-engine/apidocs)
+
 [Official examples on GitHub](https://github.com/google/earthengine-api/tree/master/python)
 
 [Export data (Colaboratory)](https://colab.research.google.com/github/csaybar/EEwPython/blob/dev/10_Export.ipynb#scrollTo=M9EbU74_ESvY)
@@ -310,6 +312,8 @@ Error: Export too large: specified 598674825 pixels (max: 100000000). Specify hi
 Error: Exported bands must have compatible data types; found inconsistent types: Float64 and Float32.
 
   -> Because of "... Currently only 'GeoTIFF' and 'TFRecord' are supported, defaults to 'GeoTIFF'..." and  in GeoTIFF you can not mix data types. Try to save bands separately (use image.select('band_name')). 
+  
+  -> You can convert all bands in ee.Image to a 32-bit float using use float() or toFloat() ([ee.Image.float](https://developers.google.com/earth-engine/apidocs/ee-image-float)) or to a 64-bit float by double() or toDouble() ([ee.Image.double](https://developers.google.com/earth-engine/apidocs/ee-image-double)).
 
 ## Download clipped images over some area within some period (Sentinel-1)
 Sometimes I want to investigate some area and I need Sentinel-1 images to be at my local computer. First I need to get a list of image names and then dowload them in for loop. If the area is not too big ([Download](https://github.com/CzendaZdenda/google-earth-engine-notes#download)) I can use `getDownloadURL` method. Another approach is to use `toDrive` method and exort data first to Google Drive folder. And then download them.
