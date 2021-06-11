@@ -11,6 +11,10 @@ I will commit here some code and notes. This is not a tutorial of Google Earth E
 
 [Plotting Timeseries (Sentinel-1)](https://github.com/CzendaZdenda/google-earth-engine-notes#plotting-timeseries)
 
+[Plotting Timeseries (Sentinel-1, ERA5, MODIS LST) (RUS) (Colab)](https://colab.research.google.com/drive/1yhjQZNAjIIUvk7VMC49SAvxkPXXa7ukP?usp=sharing) Получение временного ряда данных из Earth Engine в какой-то точке
+
+[Plotting Sentine-1 data for a specific date for points along the line (RUS) (Colab)](https://colab.research.google.com/drive/1-CjHOyASv0Y1ld9U6krbi7_NEhgCu_IN?usp=sharing) Значение Sentinel-1 за конкретную дату для точек вдоль линии
+
 ---
 
 ## Links
